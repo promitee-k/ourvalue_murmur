@@ -2,10 +2,11 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { UserModule } from './user/user.module';
-// import { MurmurModule } from './murmur/murmur.module';
-// import { User } from './user/entities/user.entity';
-// import { Murmur } from './murmur/entities/murmur.entity';
+import { UserModule } from './user/user.module';
+import { MurmurModule } from './murmur/murmur.module';
+import { User } from './user/entities/user.entity';
+import { Murmur } from './murmur/entities/murmur.entity';
+
 
 @Module({
   imports: [TypeOrmModule.forRoot({
@@ -15,9 +16,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     username: 'docker',
     password: 'docker',
     database: 'test',
-    entities: [],
+    entities: [User,Murmur],
     synchronize: true,
-  }) ],
+  }), UserModule, MurmurModule ],
   controllers: [AppController],
   providers: [AppService],
 })
