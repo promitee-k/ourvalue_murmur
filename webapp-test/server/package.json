@@ -27,6 +27,7 @@
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/typeorm": "^7.0.0",
     "@types/estree": "^1.0.5",
+    "class-validator": "^0.14.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.6.5",
     "reflect-metadata": "^0.1.13",

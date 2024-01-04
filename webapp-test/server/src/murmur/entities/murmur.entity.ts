@@ -1,6 +1,7 @@
-import { Column, Entity,  PrimaryGeneratedColumn } from "typeorm";
+import { User } from "src/user/entities/user.entity";
+import { Column, Entity,  JoinColumn,  ManyToOne,  PrimaryGeneratedColumn,  } from "typeorm";
 
-@Entity()
+@Entity({name:"murmur"})
 export class Murmur {
     @PrimaryGeneratedColumn()
     id:number;
@@ -8,9 +9,14 @@ export class Murmur {
     @Column()
     description:string;
     
-    @Column()
+    @Column({ default: 0 })
     likecount:number;
-    
+
+    @ManyToOne(() => User, user => user.murmurs)
+    @JoinColumn({ name: 'user_id' })
+    user: User; 
+
     @Column()
-    user_id:number;
-}
+    user_id: number; 
+  }
+

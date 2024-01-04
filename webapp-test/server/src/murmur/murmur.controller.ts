@@ -1,34 +1,46 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { MurmurService } from './murmur.service';
 import { CreateMurmurDto } from './dto/create-murmur.dto';
-import { UpdateMurmurDto } from './dto/update-murmur.dto';
 
 @Controller('murmur')
 export class MurmurController {
   constructor(private readonly murmurService: MurmurService) {}
-
-  @Post()
-  create(@Body() createMurmurDto: CreateMurmurDto) {
-    return this.murmurService.create(createMurmurDto);
-  }
-
   @Get()
   findAll() {
     return this.murmurService.findAll();
   }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.murmurService.findOne(+id);
+  @Get('currentuser=:user_id/murmurs')
+  async findOwnMurmurs(
+    @Param('user_id') user_id: number,
+  ) {
+    return await this.murmurService.findAllbyUserId(user_id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMurmurDto: UpdateMurmurDto) {
-    return this.murmurService.update(+id, updateMurmurDto);
+  @Get('userid=:user_id/murmurs')
+  async findAllMurmurByUser(
+    @Param('user_id') user_id: number,
+  ) {
+    return this.murmurService.findAllbyUserId(user_id)
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.murmurService.remove(+id);
+  @Post('userid=:user_id/newmurmur')
+  async create(
+    @Param('user_id') user_id: number,
+    @Body() description: string,
+  ) 
+  {
+      return await this.murmurService.create({user_id,description});
+    }
+
+  @Patch(':id/like')
+  async LikeMurmur(@Param('id') id: number){
+      return await this.murmurService.updateLikeCount(id)
   }
+
+  @Delete('currentuser=:user_id/murmurs/:id')
+  remove(@Param('id') id: number) {
+    return this.murmurService.remove(id);
+  }
+
+
 }

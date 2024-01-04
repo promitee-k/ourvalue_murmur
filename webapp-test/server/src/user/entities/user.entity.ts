@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Murmur } from "src/murmur/entities/murmur.entity";
+import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({name:"user"})
 export class User {
@@ -13,4 +14,7 @@ export class User {
 
     @Column()
     followingcount:number;
+
+    @OneToMany(() => Murmur, murmur => murmur.user)
+  murmurs: Murmur[];
 }

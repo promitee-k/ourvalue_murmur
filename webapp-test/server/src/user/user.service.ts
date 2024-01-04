@@ -1,26 +1,39 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
-
+import {  Repository } from 'typeorm';
+import { User } from './entities/user.entity';
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
+
+ async findAll(): Promise<User[]> {
+   try{return await this.userRepository.find();} 
+   catch(error){
+    console.error('Error finding users:', error);
+    throw new Error('Unable to find users');
+   }
+  }
+ async findOne(id: number) {
+   try{return await this.userRepository.findOne({id});} 
+   catch(error){
+    console.error('Error finding the user', error);
+    throw new Error('Unable to find user');
+   }
   }
 
-  findAll() {
-    return `This action returns all user`;
-  }
+ async follow(follower_id: number, following_id:number) {
+  const follower = await this.findOne(follower_id);
+  const following = await this.findOne(following_id);
+  
+  follower.followingcount +=1;
+  following.followercount +=1;
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+  this.userRepository.save(follower);
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
-}
+  return this.userRepository.save(following);
+ }}

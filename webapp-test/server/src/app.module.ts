@@ -7,7 +7,6 @@ import { MurmurModule } from './murmur/murmur.module';
 import { User } from './user/entities/user.entity';
 import { Murmur } from './murmur/entities/murmur.entity';
 
-
 @Module({
   imports: [TypeOrmModule.forRoot({
     type: 'mysql',
@@ -18,7 +17,7 @@ import { Murmur } from './murmur/entities/murmur.entity';
     database: 'test',
     entities: [User,Murmur],
     synchronize: true,
-  }), UserModule, MurmurModule ],
+  }) ,UserModule, MurmurModule],
   controllers: [AppController],
   providers: [AppService],
 })
