@@ -6,4 +6,3 @@ Create TABLE IF NOT EXISTS  murmur (
 	FOREIGN KEY (user_id) 
 	REFERENCES user(id)
 );
-
