@@ -7,15 +7,15 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  async findAll() {
+    return await this.userService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.userService.findOne(+id);
   }
-// will use patch to update followercount/followingcount
+// using patch to update followercount/followingcount
   @Patch(':id/:userid/follow')
   async followUser(@Param('id')id:number,@Param('userid')userid:number){
   return await this.userService.follow(id,userid);

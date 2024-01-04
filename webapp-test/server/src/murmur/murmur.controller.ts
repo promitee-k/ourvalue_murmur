@@ -6,8 +6,8 @@ import { CreateMurmurDto } from './dto/create-murmur.dto';
 export class MurmurController {
   constructor(private readonly murmurService: MurmurService) {}
   @Get()
-  findAll() {
-    return this.murmurService.findAll();
+  async findAll() {
+    return await this.murmurService.findAll();
   }
   @Get('currentuser=:user_id/murmurs')
   async findOwnMurmurs(
@@ -38,8 +38,8 @@ export class MurmurController {
   }
 
   @Delete('currentuser=:user_id/murmurs/:id')
-  remove(@Param('id') id: number) {
-    return this.murmurService.remove(id);
+  async remove(@Param('id') id: number) {
+    return await this.murmurService.remove(id);
   }
 
 

@@ -10,55 +10,63 @@ export class MurmurService {
   constructor(
     @InjectRepository(Murmur)
     private readonly murmurRepository: Repository<Murmur>,
-  ) {}
+  ) { }
   //create new murmur
-   create(createMurmurDto: CreateMurmurDto) {
-    try{
+  create(createMurmurDto: CreateMurmurDto) {
+    try {
       return this.murmurRepository.save(createMurmurDto);
-    }catch(error){
+    } catch (error) {
       console.error('Error creating murmur:', error);
       throw new Error('Unable to create murmur');
     }
-   
+
   }
   //fetch all murmurs
-  async findAll():Promise<Murmur[]> {
-    try{return await this.murmurRepository.find();}
-    catch(error){
+  async findAll(): Promise<Murmur[]> {
+    try { return await this.murmurRepository.find(); }
+    catch (error) {
       console.error('Error showing murmurs:', error);
       throw new Error('Unable to show murmurs');
     }
-    
+
   }
-  async findOne(id:number):Promise<Murmur> {
-    try{ return this.murmurRepository.findOne({id});}
-    catch(error){
+  async findOne(id: number): Promise<Murmur> {
+    try { return this.murmurRepository.findOne({ id }); }
+    catch (error) {
       console.error('Error showing murmurs:', error);
       throw new Error('Unable to show murmurs');
     }
-    
+
   }
   //fetch user specific murmurs
- async findAllbyUserId(user_id:number){
-   try{return await this.murmurRepository.find({user_id})} 
-   catch(error){
-    console.error('Error showing murmurs of this user:', error);
-    throw new Error('Unable to show murmurs of this user');
-   }
+  async findAllbyUserId(user_id: number) {
+    try { return await this.murmurRepository.find({ user_id }) }
+    catch (error) {
+      console.error('Error showing murmurs of this user:', error);
+      throw new Error('Unable to show murmurs of this user');
+    }
   }
- async updateLikeCount(current_murmur_id: number){
-  const likedmurmur = await this.findOne(current_murmur_id)
+  async updateLikeCount(current_murmur_id: number) {
+    try {
+      const likedmurmur = await this.findOne(current_murmur_id)
 
-  likedmurmur.likecount += 1;
+      likedmurmur.likecount += 1;
 
-  return this.murmurRepository.save(likedmurmur);
- }
- async remove(current_murmur_id: number) {
+      return this.murmurRepository.save(likedmurmur);
+    } catch (error) {
+      console.error('Error liking this murmur:', error);
+      throw new Error('Unable to like murmur');
+    }
+  }
+  async remove(current_murmur_id: number) {
 
-   try{return await this.murmurRepository.delete({id:current_murmur_id});}  
-   catch(error){
-    console.error('Error deleting murmur:', error);
-    throw new Error('Unable to delete murmur');
-   }
+    try {
+      await this.murmurRepository.delete({ id: current_murmur_id });
+      return 'The murmur has been deleted'
+    }
+    catch (error) {
+      console.error('Error deleting murmur:', error);
+      throw new Error('Unable to delete murmur');
+    }
   }
 }
