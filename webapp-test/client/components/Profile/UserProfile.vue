@@ -6,14 +6,16 @@
             <p>Followers: {{ currentUser.followercount }}</p>
             <p>Following: {{ currentUser.followingcount }}</p>
         </div>
-
-        <div v-for="murmur in userMurmurs" :key="murmur.id" class="murmur">
-            <div class="murmur-header">
-                <span class="murmur-date">{{ murmur.date }}</span>
+        <div>
+            <p>Murmurs:</p>
+            <div v-for="murmur in murmurs" :key="murmur.id" class="murmur">
+                <div class="murmur-header">
+                <span></span>
             </div>
-            <div class="murmur-description">
-                {{ murmur.description }}
-                <button @click="deleteMurmur(murmur.id)" class="delete-button">Delete</button>
+                <div class="murmur-description">
+                    {{ murmur.description }}
+                    <button @click="deleteMurmur(murmur.id)" class="delete-button">Delete</button>
+                </div>
             </div>
         </div>
     </div>
@@ -23,18 +25,18 @@
 export default {
     data() {
         return {
-            currentUser: {
-            },
-            userMurmurs: [],
+            currentUser: {id:3,name:'Rick Sanchez',followercount:0,followingcount:5},
+            murmurs: [{description:'dummy murmur',id:1},{description:'dummy murmur 2',id:2}],
         };
     },
     mounted() {
-        this.fetchUserMurmurs();
+        this.getCurrentUser();
+        this.fetchmurmurs();
     },
     methods: {
         async getCurrentUser() {
             try {
-                const response = await this.$axios.$get(`user/3`);
+                const response = await this.$axios.$get(`user/3`); //default current userid is 3
                 this.currentUser = response.map(item => ({
                     id: item.id,
                     name: item.date,
@@ -45,12 +47,11 @@ export default {
                 console.error('Error fetching user murmurs:', error);
             }
         },
-        async fetchUserMurmurs() {
+        async fetchmurmurs() {
             try {
                 const response = await this.$axios.$get(`/murmur/user/${this.currentUser.id}`);
-                this.userMurmurs = response.map(item => ({
+                this.murmurs = response.map(item => ({
                     id: item.id,
-                    date: item.date,
                     description: item.title,
                 }));
             } catch (error) {
@@ -61,7 +62,7 @@ export default {
             try {
                 await this.$axios.$delete(`murmur/currentuser=${currentUser.id}/murmurs/${murmurId}`);
 
-                this.userMurmurs = this.userMurmurs.filter(murmur => murmur.id !== murmurId);
+                this.murmurs = this.murmurs.filter(murmur => murmur.id !== murmurId);
 
                 console.log(`Murmur ${murmurId} deleted.`);
             } catch (error) {
@@ -72,6 +73,5 @@ export default {
 };
 </script>
   
-<style scoped>
-</style>
+<style scoped></style>
   

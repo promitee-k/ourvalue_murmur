@@ -1,7 +1,7 @@
 <template>
     <div class="murmur-section">
         <textarea v-model="murmurText" placeholder="What's on your mind?" class="textarea"></textarea>
-        <button @click="murmur" class="murmur-button">murmur</button>
+        <button @click="createMurmur" class="murmur-button">murmur</button>
     </div>
 </template>
   

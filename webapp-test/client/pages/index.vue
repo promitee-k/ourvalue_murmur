@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="username" @click="">
+    <div class="username" @click="navigateToProfile">
       {{ username }}
     </div>
 
@@ -12,23 +12,28 @@
 
     <Timeline></Timeline>
 
-    <PeopleYouMayKnow></PeopleYouMayKnow>
   </div>
 </template>
 
 <script>
+import CreateMurmur from '~/components/Home/CreateMurmur.vue';
+
+import Timeline from '~/components/Home/Timeline.vue';
+
 export default {
     data() {
         return {
-            username: 'Rick', // Replace with actual username
+            username: 'Rick Sanchez', 
         };
     },
     methods: {
         navigateToPeopleYouMayKnow() {
             this.$router.push('/people-you-may-know');
+        },
+        navigateToProfile() {
+            this.$router.push('/user-profile');
         }
     },
-    components: { Timeline, Timeline, CreateMurmur, PeopleYouMayKnow }
 };
 </script>
 

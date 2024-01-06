@@ -9,13 +9,13 @@
             <div class="murmur-description">
                 {{ murmur.description }}
             </div>
-            <LikeButton @likeMurmur="likeMurmurHandler(murmur.id)" />
+            <!-- <LikeButton @likeMurmur="likeMurmurHandler(murmur.id)" /> -->
         </div>
     </div>
 </template>
 
 <script>
-import LikeButton from '/components/LikeButton.vue';
+// import LikeButton from '/components/LikeButton.vue';
 
 export default {
     data() {

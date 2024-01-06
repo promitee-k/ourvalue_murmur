@@ -1,6 +1,6 @@
 <template>
     <div class="people-section">
-        <h2 class="people-header">People You May Know</h2>
+        <h2 class="people-header">People You May Know Page</h2>
         <div v-for="person in people" :key="person.id" class="person">
             {{ person.name }}
             <button @click="follow(person.id)" class="follow-button">Follow</button>
@@ -23,7 +23,9 @@ export default {
        async fetchUsers(){
             try{
                 const response = await this.$axios.$get(`/user`)
-                this.people = response.map(item =>({
+                this.people = response
+                .filter(item => item.id !== 3) //current user id is 3
+                .map(item =>({
                     id:item.id,
                     name:item.name
                 }))
