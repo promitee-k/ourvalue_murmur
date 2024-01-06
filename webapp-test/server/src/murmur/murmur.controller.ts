@@ -9,26 +9,23 @@ export class MurmurController {
   async findAll() {
     return await this.murmurService.findAll();
   }
-  @Get('currentuser=:user_id/murmurs')
-  async findOwnMurmurs(
+
+
+  @Get('user=:user_id/murmurs')
+  async findUserMurmurs(
     @Param('user_id') user_id: number,
   ) {
     return await this.murmurService.findAllbyUserId(user_id);
   }
 
-  @Get('userid=:user_id/murmurs')
-  async findAllMurmurByUser(
-    @Param('user_id') user_id: number,
-  ) {
-    return this.murmurService.findAllbyUserId(user_id)
-  }
 
   @Post('userid=:user_id/newmurmur')
   async create(
     @Param('user_id') user_id: number,
-    @Body() description: string,
+    @Body() body: {text:string},
   ) 
   {
+    const description = body.text
       return await this.murmurService.create({user_id,description});
     }
 
@@ -37,7 +34,7 @@ export class MurmurController {
       return await this.murmurService.updateLikeCount(id)
   }
 
-  @Delete('currentuser=:user_id/murmurs/:id')
+  @Delete(':id')
   async remove(@Param('id') id: number) {
     return await this.murmurService.remove(id);
   }

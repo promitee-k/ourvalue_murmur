@@ -17,6 +17,7 @@ services:
       - ./data:/var/lib/mysql
     ports:
       - 3306:3306
+    command: "--skip-grant-tables"
     security_opt:
       - seccomp:unconfined
 volumes:
