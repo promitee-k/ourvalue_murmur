@@ -18,16 +18,17 @@
 
 <script>
 export default {
-  data() {
-    return {
-      username: 'Rick', // Replace with actual username
-    };
-  },
-  methods: {
-    navigateToPeopleYouMayKnow() {
-      this.$router.push('/people-you-may-know');
-    }
-  }
+    data() {
+        return {
+            username: 'Rick', // Replace with actual username
+        };
+    },
+    methods: {
+        navigateToPeopleYouMayKnow() {
+            this.$router.push('/people-you-may-know');
+        }
+    },
+    components: { Timeline, Timeline, CreateMurmur, PeopleYouMayKnow }
 };
 </script>
 
