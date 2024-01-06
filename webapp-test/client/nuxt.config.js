@@ -39,15 +39,9 @@ export default {
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
     proxy: true,
+    baseURL:'http://localhost:3001'
   },
-  proxy: {
-    '/api/postTest': {
-      // ターゲット先のURLを指定
-      target: 'http://localhost:3001',
-      changeOrigin: true,
-      secure: false,
-    },
-  },
+
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {},
