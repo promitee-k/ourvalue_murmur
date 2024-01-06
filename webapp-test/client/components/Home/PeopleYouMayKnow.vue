@@ -3,17 +3,17 @@
         <h2 class="people-header">People You May Know Page</h2>
         <div v-for="person in people" :key="person.id" class="person">
             {{ person.name }}
-            <button @click="follow(person.id)" class="follow-button">Follow</button>
+            <button @click="follow(person.id)" class="follow-button">{{ FollowButtonText }}</button>
         </div>
     </div>
 </template>
 <script>
+
 export default {
     data() {
         return {
-            people: [
-            
-            ]
+            FollowButtonText: 'Follow',
+            people: []
         };
     },
     mounted() {
@@ -37,6 +37,9 @@ export default {
             // Logic to handle following a person
             try{
                 await this.$axios.$patch(`user/3/${person}/follow`)
+                await this.fetchFollowingMurmurs(person)
+                this.FollowButtonText = 'Followed';
+
             }catch (error) {
                 console.error('Error fetching users:', error);
             }

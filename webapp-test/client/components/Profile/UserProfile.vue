@@ -31,28 +31,30 @@ export default {
     },
     mounted() {
         this.getCurrentUser();
-        this.fetchmurmurs();
+   
     },
     methods: {
         async getCurrentUser() {
             try {
                 const response = await this.$axios.$get(`user/3`); //default current userid is 3
-                this.currentUser = response.map(item => ({
-                    id: item.id,
-                    name: item.date,
-                    followers: item.followercount,
-                    following: item.followingcount,
-                }));
+                this.currentUser = {
+                    id: response.id,
+                    name: response.date,
+                    followers: response.followercount,
+                    following: response.followingcount,
+                };
+                this.fetchmurmurs();
             } catch (error) {
                 console.error('Error fetching user murmurs:', error);
             }
+            
         },
         async fetchmurmurs() {
             try {
                 const response = await this.$axios.$get(`/murmur/user/${this.currentUser.id}`);
                 this.murmurs = response.map(item => ({
                     id: item.id,
-                    description: item.title,
+                    description: item.description,
                 }));
             } catch (error) {
                 console.error('Error fetching user murmurs:', error);
@@ -60,7 +62,7 @@ export default {
         },
         async deleteMurmur(murmurId) {
             try {
-                await this.$axios.$delete(`murmur/currentuser=${currentUser.id}/murmurs/${murmurId}`);
+                await this.$axios.$delete(`murmur/${murmurId}`);
 
                 this.murmurs = this.murmurs.filter(murmur => murmur.id !== murmurId);
 

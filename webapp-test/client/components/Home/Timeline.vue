@@ -4,47 +4,70 @@
             <div class="murmur-header">
                 <!--  use user_id instead of murmur.id -->
                 <NuxtLink :to="`/user/${murmur.user_id}`" class="username-link">{{ murmur.username }}</NuxtLink>
-                <span class="murmur-date">{{ murmur.date }}</span>
             </div>
             <div class="murmur-description">
                 {{ murmur.description }}
+                <p>{{ murmur.likes }} likes </p>
             </div>
-            <!-- <LikeButton @likeMurmur="likeMurmurHandler(murmur.id)" /> -->
+
+            <button @click="likeMurmurHandler(murmur.id)" class="like-button">{{ LikebuttonText }}</button>
+
         </div>
     </div>
 </template>
 
 <script>
-// import LikeButton from '/components/LikeButton.vue';
 
 export default {
     data() {
         return {
+            LikebuttonText:'Like',
             murmurs: []
         };
     },
     mounted() {
-        this.fetchMurmurs();
+        this.fetchOwnMurmurs();
     },
     methods: {
-        async fetchMurmurs() {
+        async fetchOwnMurmurs() {
             try {
-                const response = await this.$axios.$get('/murmur');
-                this.murmurs = response.map(item => ({
+                const response = await this.$axios.$get(`user=3/murmurs`);
+                this.murmurs =[
+                    ...this.murmurs,    
+                ... response.map(item => ({
                     id: item.id,
                     user_id: item.user_id,
                     username: 'User' + item.user_id,  // For simplicity, appending 'User' to user ID
-                    date: new Date().toISOString().slice(0, 10), // Using today's date for simplicity
-                    description: item.title // Assuming the title as the description for this example
-                }));
+                    description: item.description,
+                    likes:item.likecount 
+                }))]
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         },
+        async fetchFollowingMurmurs(user_id){
+            try {
+                const response = await this.$axios.$get(`user=${user_id}/murmurs`);
+                this.murmurs =[
+                    ...this.murmurs,
+                    ...response.map(item => ({
+                    id: item.id,
+                    user_id: item.user_id,
+                    username: 'User' + item.user_id,  // For simplicity, appending 'User' to user ID
+                    description: item.description,
+                    likes:item.likecount  
+                }))
+                ] 
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        },
+
        async likeMurmurHandler(id){
             try{
              const response = await this.$axios.$patch(`murmur/${id}/like`)
              console.log(response)
+             this.LikebuttonText = 'Liked'
             } catch (error) {
                 console.error( error);
             }
@@ -83,11 +106,6 @@ export default {
 
 .username-link:hover {
     color: #1155cc;
-}
-
-.murmur-date {
-    font-size: 14px;
-    color: #777777;
 }
 
 .murmur-description {
