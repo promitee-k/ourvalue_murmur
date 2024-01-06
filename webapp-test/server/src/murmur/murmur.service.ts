@@ -3,7 +3,6 @@ import { CreateMurmurDto } from './dto/create-murmur.dto';
 import { Murmur } from './entities/murmur.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UpdateMurmurDto } from './dto/update-murmur.dto';
 
 @Injectable()
 export class MurmurService {
