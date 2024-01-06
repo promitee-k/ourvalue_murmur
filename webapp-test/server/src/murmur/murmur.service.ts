@@ -52,7 +52,8 @@ export class MurmurService {
 
       likedmurmur.likecount += 1;
 
-      return this.murmurRepository.save(likedmurmur);
+      await this.murmurRepository.save(likedmurmur);
+      return likedmurmur
     } catch (error) {
       console.error('Error liking this murmur:', error);
       throw new Error('Unable to like murmur');

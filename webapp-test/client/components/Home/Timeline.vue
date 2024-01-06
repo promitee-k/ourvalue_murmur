@@ -9,11 +9,14 @@
             <div class="murmur-description">
                 {{ murmur.description }}
             </div>
+            <LikeButton @likeMurmur="likeMurmurHandler(murmur.id)" />
         </div>
     </div>
 </template>
 
 <script>
+import LikeButton from '/components/LikeButton.vue';
+
 export default {
     data() {
         return {
@@ -37,8 +40,17 @@ export default {
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
-        }
+        },
+       async likeMurmurHandler(id){
+            try{
+             const response = await this.$axios.$patch(`murmur/${id}/like`)
+             console.log(response)
+            } catch (error) {
+                console.error( error);
+            }
 
+        }
+        
     }
 };
 </script>
