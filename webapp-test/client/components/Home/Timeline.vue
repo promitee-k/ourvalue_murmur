@@ -26,7 +26,7 @@ export default {
     methods: {
         async fetchMurmurs() {
             try {
-                const response = await this.$axios.$get('https://jsonplaceholder.typicode.com/posts');
+                const response = await this.$axios.$get('/murmur');
                 this.murmurs = response.map(item => ({
                     id: item.id,
                     user_id: item.user_id,

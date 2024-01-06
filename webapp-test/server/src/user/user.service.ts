@@ -34,9 +34,11 @@ export class UserService {
       follower.followingcount += 1;
       following.followercount += 1;
 
-      this.userRepository.save(follower);
+     await this.userRepository.save(follower);
 
-      return this.userRepository.save(following);
+     await  this.userRepository.save(following);
+
+      return 'following '+following.name
     }
 
     catch (error) {
