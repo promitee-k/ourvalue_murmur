@@ -1,5 +1,5 @@
 import { Murmur } from "src/murmur/entities/murmur.entity";
-import { Column, Entity, OneToMany, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 
 @Entity({name:"user"})
 export class User {

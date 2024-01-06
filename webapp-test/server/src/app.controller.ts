@@ -9,11 +9,5 @@ export class AppController {
    showMurmurs(){
     return this.appService.getMurmurs();
    }
-  //  @Get()
-  //  showUsers(){
-  //   return this.appService.getUsers();
-  //  }
-  // getHello(): string {
-  //   return this.appService.getHello();
-  // }
+
 }
