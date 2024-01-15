@@ -3,8 +3,8 @@
         <h1>Your Profile</h1>
         <div>
             <p>Username: {{ currentUser.name }}</p>
-            <p>Followers: {{ currentUser.followercount }}</p>
-            <p>Following: {{ currentUser.followingcount }}</p>
+            <p>Followers: {{ currentUser.followers }}</p>
+            <p>Following: {{ currentUser.following }}</p>
         </div>
         <div>
             <p>Murmurs:</p>
@@ -37,9 +37,10 @@ export default {
         async getCurrentUser() {
             try {
                 const response = await this.$axios.$get(`user/3`); //default current userid is 3
+                console.log(response)
                 this.currentUser = {
                     id: response.id,
-                    name: response.date,
+                    name: response.name,
                     followers: response.followercount,
                     following: response.followingcount,
                 };
@@ -51,7 +52,7 @@ export default {
         },
         async fetchmurmurs() {
             try {
-                const response = await this.$axios.$get(`/murmur/user/${this.currentUser.id}`);
+                const response = await this.$axios.$get(`murmur/user=${this.currentUser.id}/murmurs`);
                 this.murmurs = response.map(item => ({
                     id: item.id,
                     description: item.description,

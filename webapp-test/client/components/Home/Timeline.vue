@@ -9,8 +9,7 @@
                 {{ murmur.description }}
                 <p>{{ murmur.likes }} likes </p>
             </div>
-
-            <button @click="likeMurmurHandler(murmur.id)" class="like-button">{{ LikebuttonText }}</button>
+            <button @click="likeMurmurHandler(murmur.id)" class="like-button">Like</button>
 
         </div>
     </div>
@@ -19,61 +18,72 @@
 <script>
 
 export default {
+
     data() {
         return {
-            LikebuttonText:'Like',
-            murmurs: []
+            murmurs: [],
+            currentUser: {},
+            followingIds: []
         };
     },
     mounted() {
-        this.fetchOwnMurmurs();
+        this.fetchMurmurs(3);
+        this.getFollowingIds();
+        if (followingIds.length !== 0) {
+            followingIds.map(function (id) {
+                this.fetchMurmurs(id);
+            }.bind(this));
+        }
+     
     },
     methods: {
-        async fetchOwnMurmurs() {
+        async getFollowingIds() {
             try {
-                const response = await this.$axios.$get(`user=3/murmurs`);
-                this.murmurs =[
-                    ...this.murmurs,    
-                ... response.map(item => ({
-                    id: item.id,
-                    user_id: item.user_id,
-                    username: 'User' + item.user_id,  // For simplicity, appending 'User' to user ID
-                    description: item.description,
-                    likes:item.likecount 
-                }))]
+                const response = await this.$axios.$get(`user/3`); //default current userid is 3
+                this.currentUser = {
+                    id: response.id,
+                    following: response.following,
+                };
+                if (this.currentUser.following !== '') {
+                    const IdArray = this.currentUser.following.split(',')
+                    this.followingIds = [...IdArray]
+                }
+
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching user murmurs:', error);
             }
+         
+
         },
-        async fetchFollowingMurmurs(user_id){
+        async fetchMurmurs(user_id) {
             try {
-                const response = await this.$axios.$get(`user=${user_id}/murmurs`);
-                this.murmurs =[
+                const response = await this.$axios.$get(`murmur/user=${user_id}/murmurs`);
+                this.murmurs = [
                     ...this.murmurs,
                     ...response.map(item => ({
-                    id: item.id,
-                    user_id: item.user_id,
-                    username: 'User' + item.user_id,  // For simplicity, appending 'User' to user ID
-                    description: item.description,
-                    likes:item.likecount  
-                }))
-                ] 
+                        id: item.id,
+                        user_id: item.user_id,
+                        username: 'User' + item.user_id,  // For simplicity, appending 'User' to user ID
+                        description: item.description,
+                        likes: item.likecount
+                    }))
+                ]
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         },
 
-       async likeMurmurHandler(id){
-            try{
-             const response = await this.$axios.$patch(`murmur/${id}/like`)
-             console.log(response)
-             this.LikebuttonText = 'Liked'
+        async likeMurmurHandler(id) {
+            try {
+                const response = await this.$axios.$patch(`murmur/${id}/like`)
+                console.log(response)
+     
             } catch (error) {
-                console.error( error);
+                console.error(error);
             }
 
         }
-        
+
     }
 };
 </script>

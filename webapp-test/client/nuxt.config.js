@@ -33,12 +33,10 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    '@nuxtjs/proxy',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    proxy: true,
     baseURL:'http://localhost:3001'
   },
 
