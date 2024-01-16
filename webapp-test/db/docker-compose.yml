@@ -2,6 +2,7 @@ version: '3'
 
 services:
   test:
+    platform: linux/x86_64
     image: mysql:5.7
     build: ./docker
     environment:
@@ -17,7 +18,6 @@ services:
       - ./data:/var/lib/mysql
     ports:
       - 3306:3306
-    command: "--skip-grant-tables"
     security_opt:
       - seccomp:unconfined
 volumes:

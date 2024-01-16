@@ -32,7 +32,11 @@ export class UserService {
 
       follower.followingcount += 1;
       following.followercount += 1;
-
+      
+      if(follower.following!==''){
+        follower.following +=','+following_id
+      } else follower.following += following_id
+   
      await this.userRepository.save(follower);
 
      await  this.userRepository.save(following);

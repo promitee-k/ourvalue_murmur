@@ -9,11 +9,14 @@ export class User {
     @Column()
     name:string;
 
-    @Column()
+    @Column({ default: 0 })
     followercount:number;
 
-    @Column()
+    @Column({ default: 0 })
     followingcount:number;
+    @Column({ default: '' }) 
+    following: string;
+
 
     @OneToMany(() => Murmur, murmur => murmur.user)
   murmurs: Murmur[];
